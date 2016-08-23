@@ -1,0 +1,79 @@
+ 
+namespace db{
+	class EmployeeNo {
+		getNoByEmployeeName =function(empName) {
+			//console.log("正在连接数据库服务器...");
+			import mysql.client;
+		
+			var dbMysql,err = mysql.client(
+    			server = "10.10.10.108:3307"; //数据库服务器,可省略默认为localhost
+    			uid = "root";//用户名,可省略默认为root
+    			pwd = "123@abc";
+			); 
+			
+			if(!dbMysql){ 
+    			//console.log("连接数据库失败",err);
+    			return;
+			}
+			
+			//选择数据库
+			dbMysql.selectDb("evoa_demo")  
+			
+			
+			
+			//查询数据并返回记录集
+			var result = dbMysql.query("SELECT name,no from employee where name='"+empName+"'");
+			
+			if(result.numRows() > 0){
+				var dataEmp = result.fetchRow();
+				return dataEmp[2];
+			}
+			
+			dbMysql.close();
+			
+			return "";
+		}
+		
+		getLikeEmployeeName = function(empName) {
+			
+			
+			import mysql.client;
+			var ret = {};
+			
+			var dbMysql,err = mysql.client(
+    			server = "10.10.10.108:3307"; //数据库服务器,可省略默认为localhost
+    			uid = "root";//用户名,可省略默认为root
+    			pwd = "123@abc";
+			); 
+			
+			if(!dbMysql){ 
+    			//console.log("连接数据库失败",err);
+    			return ret;
+			}
+			
+			//选择数据库
+			dbMysql.selectDb("evoa_demo")  
+			
+			
+			
+			//查询数据并返回记录集
+			var result_name = dbMysql.query("select name,no from employee where name like '"+empName+"%'");
+			
+			if(result_name.numRows() > 0){				
+				for v_name,v_no in result_name.each() {
+					global.table.push(ret,v_name+":"+v_no);				
+				}			
+			}
+			
+			dbMysql.close();
+			
+			return ret;
+			
+		};
+		
+	}	
+}
+
+
+
+
